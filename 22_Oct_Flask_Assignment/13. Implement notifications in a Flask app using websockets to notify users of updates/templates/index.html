@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifications</title>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+            socket.on('message', function(msg) {
+                console.log(msg);
+            });
+
+            socket.on('notification', function(msg) {
+                var notificationsDiv = document.getElementById('notifications');
+                var notificationElement = document.createElement('div');
+                notificationElement.className = 'notification';
+                notificationElement.innerText = msg;
+                notificationsDiv.appendChild(notificationElement);
+            });
+
+            document.getElementById('joinRoomForm').onsubmit = function(event) {
+                event.preventDefault();
+                var room = document.getElementById('roomName').value;
+                socket.emit('join', { room: room });
+            };
+
+            document.getElementById('leaveRoomForm').onsubmit = function(event) {
+                event.preventDefault();
+                var room = document.getElementById('roomName').value;
+                socket.emit('leave', { room: room });
+            };
+        });
+    </script>
+
+    <style>
+        .notification {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Notifications</h1>
+    <div id="notifications"></div>
+
+    <h2>Join Room</h2>
+    <form id="joinRoomForm">
+        <input type="text" id="roomName" placeholder="Enter room name">
+        <button type="submit">Join</button>
+    </form>
+
+    <h2>Leave Room</h2>
+    <form id="leaveRoomForm">
+        <input type="text" id="roomName" placeholder="Enter room name">
+        <button type="submit">Leave</button>
+    </form>
+</body>
+</html>
