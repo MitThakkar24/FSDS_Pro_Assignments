@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-Time Data Updates</title>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+            // Event listener for receiving updates from the server
+            socket.on('update', function(data) {
+                document.querySelector('#value').innerHTML = data.value;
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Real-Time Data Updates</h1>
+    <p>Value: <span id="value"></span></p>
+</body>
+</html>
