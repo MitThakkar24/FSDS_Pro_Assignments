@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room</title>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+            // Event listener for form submission
+            document.querySelector('#send-form').onsubmit = () => {
+                const msg = document.querySelector('#message').value;
+                socket.emit('message', msg);  // Send the message to the server
+                document.querySelector('#message').value = '';  // Clear the input field
+                return false;  // Prevent form submission
+            };
+
+            // Event listener for receiving messages from the server
+            socket.on('message', msg => {
+                const p = document.createElement('p');
+                p.innerHTML = msg;
+                document.querySelector('#messages').append(p);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="messages"></div>
+    <form id="send-form">
+        <input id="message" autocomplete="off" />
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>
