@@ -4,7 +4,7 @@
     <title>Image File</title>
 </head>
 <body>
-    <h4>{{filename}}</h4>
-    <img src="{{ filename }}" alt="Description of the image">
+    {%set fname='uploads/' + filename %}
+    <img src="{{ url_for('static', filename=fname)}}" alt="">
 </body>
 </html>

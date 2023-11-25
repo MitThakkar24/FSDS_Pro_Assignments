@@ -7,8 +7,8 @@ with open('config.json', 'r') as c:
 
 app = Flask(__name__)
 
-# Define the upload folder and allowed file extensions
-UPLOAD_FOLDER = "C:\\Users\\Asus\\OneDrive\\Documents\\GitHub\\DataScience\\Flask\\FlaskWebApplication\\static\\assets\\img"
+# Define the upload folder and allowed file extensions 
+UPLOAD_FOLDER =  r"C:\Users\Asus\OneDrive - GUJARAT POWER ENGINEERING AND RESEARCH INSTITUTE\Learning\GitHub\FSDSP-Assignments\22_Oct_Flask_Assignment\6. Build a Flask app that allows users to upload files and display them on the website\static\uploads"
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -33,8 +33,9 @@ def upload_file():
     if file and allowed_file(file.filename):
         # Save the file to the upload folder
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        return render_template('upload.html', filename = filepath) # redirect(url_for('display_file', filename=file.filename))
+        
+        filepath = file.filename
+        return render_template('upload.html', filename = file.filename) # redirect(url_for('display_file', filename=file.filename))
 
     return 'Invalid file format! Allowed formats: txt, pdf, png, jpg, jpeg, gif'
 
